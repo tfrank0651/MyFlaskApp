@@ -9,6 +9,7 @@ from flaskr.db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
+
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
@@ -18,7 +19,7 @@ def register():
         error = None
 
         if not username:
-            error = 'Username is required'
+            error = 'Username is required.'
         elif not password:
             error = 'Password is required.'
 
@@ -26,7 +27,7 @@ def register():
             try:
                 db.execute(
                     "INSERT INTO user (username, password) VALUES (?, ?)",
-                    (username, generate_password_hash(password))
+                    (username, generate_password_hash(password)),
                 )
                 db.commit()
             except db.IntegrityError:
@@ -41,7 +42,7 @@ def register():
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
-    if request.method == "POST":
+    if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         db = get_db()
@@ -91,5 +92,5 @@ def login_required(view):
 
         return view(**kwargs)
 
-    return wrapped_view()
+    return wrapped_view
 
